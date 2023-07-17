@@ -27,4 +27,33 @@ public class DAOStudent extends ConnectDatabase {
         }
         return null;
     }
+
+    public int AddStudent(Student student) {
+        String sql = "INSERT INTO [dbo].[Student]\n"
+                + "           ([FullName]\n"
+                + "           ,[phone]\n"
+                + "           ,[address]\n"
+                + "           ,[image]\n"
+                + "           ,[email]\n"
+                + "           ,[gender]\n"
+                + "           ,[username]\n"
+                + "           ,[DateOfBirth])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            prepare.setString(1, student.getFullName());
+            prepare.setString(2, student.getPhone());
+            prepare.setString(3, student.getAddress());
+            prepare.setString(4, student.getImage());
+            prepare.setString(5, student.getEmail());
+            prepare.setString(6, student.getGender());
+            prepare.setString(7, student.getUsername());
+            prepare.setString(8, student.getDOB());
+            return prepare.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return 0;
+    }
 }

@@ -26,7 +26,6 @@ public class DAOLesson extends ConnectDatabase {
     
     public List<Lesson> getListLesson(int CourseID){
         String sql = "select * from Lesson where CourseID = " + CourseID;
-        List<Lesson> list = this.getList(sql);
-        return list;
+        return this.getList(sql);
     }
 }

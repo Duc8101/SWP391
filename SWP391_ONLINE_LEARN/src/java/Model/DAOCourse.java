@@ -31,8 +31,7 @@ public class DAOCourse extends ConnectDatabase {
     public List<Course> getTop3CoursesByPrice() {
         String sql = "SELECT TOP 3 * FROM [dbo].[Course]\n"
                 + "ORDER BY price DESC";
-        List<Course> list = this.getList(sql);
-        return list;
+        return this.getList(sql);
     }
 
     public List<Course> getListCourse(String role, String username) {
@@ -68,7 +67,43 @@ public class DAOCourse extends ConnectDatabase {
     public Course getCourse(int CourseID) {
         String sql = "SELECT * FROM [dbo].[Course]\n"
                 + "WHERE [CourseID] = " + CourseID;
-        List<Course> list = this.getList(sql);
-        return list.isEmpty() ? null : list.get(0);
+        return this.getList(sql).isEmpty() ? null : this.getList(sql).get(0);
+    }
+
+    public int getNumberPage(int CategoryID, int TeacherID) {
+        String sql = "select * from [dbo].[Course]\n";
+        // if not teacher course
+        if (TeacherID == 0) {
+            // if choose category
+            if (CategoryID != 0) {
+                sql = sql + "where [CategoryID] = " + CategoryID;
+            }
+        } else {
+            sql = sql + "where [TeacherID] = " + TeacherID;
+        }
+        double number = this.getList(sql).size();
+        if (number <= ConstValue.MAX_COURSE_IN_PAGE) {
+            number = 1;
+        } else if ((number / ConstValue.MAX_COURSE_IN_PAGE) > (Math.round(number / ConstValue.MAX_COURSE_IN_PAGE))) {
+            number = Math.floor(number / ConstValue.MAX_COURSE_IN_PAGE) + 1;
+        } else {
+            number = Math.round(number / ConstValue.MAX_COURSE_IN_PAGE);
+        }
+        return (int) number;
+    }
+
+    public List<Course> getListCourse(int CategoryID, int page, String properties, String flow) {
+        String sql = "SELECT * FROM [dbo].[Course]\n";
+        if (CategoryID != 0) {
+            sql = sql + "where [CategoryID] = " + CategoryID + "\n";
+        }
+        // if not sort
+        if (properties == null && flow == null) {
+            sql = sql + "order by [CourseID]\n";
+        } else {
+            sql = sql + "order by [" + properties + "] " + flow + "\n";
+        }
+        sql = sql + "	offset (" + ConstValue.MAX_COURSE_IN_PAGE + "*" + (page - 1) + ") row fetch next " + ConstValue.MAX_COURSE_IN_PAGE + " row only";
+        return this.getList(sql);
     }
 }
