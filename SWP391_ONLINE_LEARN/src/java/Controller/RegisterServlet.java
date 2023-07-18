@@ -49,15 +49,15 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("message", "You have to input your name");
             // if phone invalid
         } else if (!phone.isEmpty() && !phone.matches(ConstValue.FORMAT_PHONE)) {
-            request.setAttribute("message", "Phone only number and length is " + ConstValue.LENGTH_PHONE);     
+            request.setAttribute("message", "Phone only number and length is " + ConstValue.LENGTH_PHONE);
         } else if (!email.isEmpty() && !email.matches(ConstValue.FORMAT_EMAIL)) {
             request.setAttribute("message", "Invalid email");
             // if username invalid
         } else if (!username.matches(ConstValue.FORMAT_USERNAME) || username.length() > ConstValue.MAX_LENGTH_USERNAME) {
-             request.setAttribute("message", "Username max " + ConstValue.MAX_LENGTH_USERNAME + " characters , starts with letters and contain only letter and digit");
+            request.setAttribute("message", "Username max " + ConstValue.MAX_LENGTH_USERNAME + " characters , starts with letters and contain only letter and digit");
             // if password invalid
         } else if (password.length() > ConstValue.MAX_LENGTH_PASSWORD) {
-            request.setAttribute("message", "Password most 50 character");
+            request.setAttribute("message", "Password max " + ConstValue.MAX_LENGTH_PASSWORD + " characters");
             // if username exist 
         } else if (account != null) {
             request.setAttribute("message", "Your account has existed");
