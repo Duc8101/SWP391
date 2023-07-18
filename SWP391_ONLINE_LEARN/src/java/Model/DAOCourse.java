@@ -35,32 +35,17 @@ public class DAOCourse extends ConnectDatabase {
     }
 
     public List<Course> getListCourse(String role, String username) {
-        DAOStudent daoStudent = new DAOStudent();
-        DAOTeacher daoTeacher = new DAOTeacher();
-        DAOPayCourse daoPay = new DAOPayCourse();
-        List<Course> listCourse = new ArrayList<>();
+        String sql;
         if (role.equals(ConstValue.ROLE_STUDENT)) {
-            Student student = daoStudent.getStudent(username);
-            // if find student successful
-            if (student != null) {
-                List<Pay_Course> listPay = daoPay.getListPay_Course(student.getID());
-                for (Pay_Course pay : listPay) {
-                    Course course = this.getCourse(pay.getCourseID());
-                    // if find course successful
-                    if (course != null) {
-                        listCourse.add(course);
-                    }
-                }
-            }
+            sql = "SELECT c.* FROM ( [dbo].[Course] c join [dbo].[Pay_Course] p\n"
+                    + "on c.CourseID = p.CourseID ) join [dbo].[Student] s on p.StudentID = s.ID\n"
+                    + "where s.username = '" + username + "'";
         } else {
-            Teacher teacher = daoTeacher.getTeacher(username);
-            // if find teacher successful
-            if (teacher != null) {
-                String sql = "SELECT * FROM [dbo].[Course]\n"
-                        + "WHERE [TeacherID] = " + teacher.getID();
-                listCourse = this.getList(sql);
-            }
+            sql = "SELECT c.* FROM [dbo].[Course] c join [dbo].[Teacher] t\n"
+                    + "on c.TeacherID = t.ID\n"
+                    + "where t.username = '" + username + "'";
         }
+        List<Course> listCourse = this.getList(sql);
         return listCourse;
     }
 
