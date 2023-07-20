@@ -3,6 +3,8 @@ package Controller;
 import Entity.*;
 import Model.DAOCourse;
 import Model.DAOLesson;
+import Model.DAOPayCourse;
+import Model.DAOStudent;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -15,6 +17,8 @@ public class CoursesServlet extends HttpServlet {
 
     private final DAOCourse daoCourse = new DAOCourse();
     private final DAOLesson daoLesson = new DAOLesson();
+    private final DAOStudent daoStudent = new DAOStudent();
+    private final DAOPayCourse daoPay = new DAOPayCourse();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -96,6 +100,42 @@ public class CoursesServlet extends HttpServlet {
             if (account == null) {
                 response.sendRedirect("Login");
             } else {
+                String CourseID = request.getParameter("CourseID");
+                int courseID = Integer.parseInt(CourseID);
+                Student student = daoStudent.getStudent(account.getUsername());
+                Course course = daoCourse.getCourse(courseID);
+                if (student == null || course == null) {
+                    response.sendRedirect("Courses");
+                } else {
+                    request.setAttribute("course", course);
+                    request.setAttribute("student", student);
+                    Dispatcher.forward(request, response, "/View/Courses/RegisterCourse.jsp");
+                }
+            }
+        }
+
+        if (service.equals("Checkout")) {
+            // if not login
+            if (account == null) {
+                response.sendRedirect("Login");
+            } else {
+                String CourseID = request.getParameter("CourseID");
+                int courseID = Integer.parseInt(CourseID);
+                Student student = daoStudent.getStudent(account.getUsername());
+                Course course = daoCourse.getCourse(courseID);
+                if (student == null || course == null) {
+                    response.sendRedirect("Courses");
+                } else {
+                    Pay_Course pay = new Pay_Course(courseID, student.getID());
+                    int number = daoPay.AddPayCourse(pay);
+                    // if pay successful
+                    if (number > 0) {
+                        request.setAttribute("course", course);
+                        request.setAttribute("student", student);
+                        request.setAttribute("mess", "Checkout successful");
+                        Dispatcher.forward(request, response, "/View/Courses/RegisterCourse.jsp");
+                    }
+                }
 
             }
         }

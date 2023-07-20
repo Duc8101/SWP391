@@ -28,6 +28,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>Controller.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyCourseServlet</servlet-name>
+        <servlet-class>Controller.MyCourseServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/Home</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyCourseServlet</servlet-name>
+        <url-pattern>/MyCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -35,6 +35,9 @@ public class DAOCourse extends ConnectDatabase {
     }
 
     public List<Course> getListCourse(String role, String username) {
+        if (role == null || (!role.equals(ConstValue.ROLE_STUDENT) && !role.equals(ConstValue.ROLE_TEACHER))) {
+            return new ArrayList<>();
+        }
         String sql;
         if (role.equals(ConstValue.ROLE_STUDENT)) {
             sql = "SELECT c.* FROM ( [dbo].[Course] c join [dbo].[Pay_Course] p\n"
