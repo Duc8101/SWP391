@@ -47,4 +47,20 @@ public class DAOAccount extends ConnectDatabase {
         }
         return 0;
     }
+    
+    public int UpdatePassword(String username, String password) {
+        int number = 0; // number of row affected
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "SET [password] = ?\n"
+                + "WHERE [username] = ?\n";
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            prepare.setString(1, password);
+            prepare.setString(2, username);
+            number = prepare.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
+    }
 }

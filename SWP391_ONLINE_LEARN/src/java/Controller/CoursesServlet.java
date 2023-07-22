@@ -104,7 +104,9 @@ public class CoursesServlet extends HttpServlet {
                 int courseID = Integer.parseInt(CourseID);
                 Student student = daoStudent.getStudent(account.getUsername());
                 Course course = daoCourse.getCourse(courseID);
-                if (student == null || course == null) {
+                Pay_Course pay = this.daoPay.getPayCourse(courseID, account.getUsername());
+                // if not find student or not find course or student already pay course
+                if (student == null || course == null || pay != null) {
                     response.sendRedirect("Courses");
                 } else {
                     request.setAttribute("course", course);
@@ -123,10 +125,12 @@ public class CoursesServlet extends HttpServlet {
                 int courseID = Integer.parseInt(CourseID);
                 Student student = daoStudent.getStudent(account.getUsername());
                 Course course = daoCourse.getCourse(courseID);
-                if (student == null || course == null) {
+                Pay_Course pay = this.daoPay.getPayCourse(courseID, account.getUsername());
+                // if not find student or not find course or student already pay course
+                if (student == null || course == null || pay != null) {
                     response.sendRedirect("Courses");
                 } else {
-                    Pay_Course pay = new Pay_Course(courseID, student.getID());
+                    pay = new Pay_Course(courseID, student.getID());
                     int number = daoPay.AddPayCourse(pay);
                     // if pay successful
                     if (number > 0) {
