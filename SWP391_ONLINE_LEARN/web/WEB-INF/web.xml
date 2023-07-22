@@ -40,6 +40,10 @@
         <servlet-name>ChangePasswordServlet</servlet-name>
         <servlet-class>Controller.ChangePasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TakeQuizServlet</servlet-name>
+        <servlet-class>Controller.TakeQuizServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/Home</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <url-pattern>/ChangePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TakeQuizServlet</servlet-name>
+        <url-pattern>/TakeQuiz</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

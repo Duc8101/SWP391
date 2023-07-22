@@ -12,6 +12,15 @@ public class Result {
     public Result() {
     }
 
+    public Result(int ResultID, int LessonID, String username, String DateRecord, float score, String status) {
+        this.ResultID = ResultID;
+        this.LessonID = LessonID;
+        this.username = username;
+        this.DateRecord = DateRecord;
+        this.score = score;
+        this.status = status;
+    }
+
     public Result(int ResultID, int LessonID, String username, float score, String status) {
         this.ResultID = ResultID;
         this.LessonID = LessonID;

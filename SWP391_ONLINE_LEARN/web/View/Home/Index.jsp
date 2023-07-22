@@ -49,7 +49,7 @@
 
         <!-- Navbar Start -->
         <jsp:include page="/View/Shared/navbar.jsp"></jsp:include>
-        <!-- Navbar End -->
+            <!-- Navbar End -->
 
         <%
             List<Course> listPrice = (List<Course>) request.getAttribute("listPrice");
