@@ -40,4 +40,28 @@ public class DAOTeacher extends ConnectDatabase {
         List<Teacher> list = this.getList(sql);
         return list.isEmpty() ? null : list.get(0);
     }
+
+    public int UpdateTeacher(Teacher teacher) {
+        int number = 0;// number of row affected
+        String sql = "UPDATE [dbo].[Teacher]\n"
+                + "   SET [FullName] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[image] = ?\n"
+                + "      ,[email] = ?\n"
+                + "      ,[gender] = ?\n"
+                + " WHERE [username] = ?";
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            prepare.setString(1, teacher.getFullName());
+            prepare.setString(2, teacher.getPhone());
+            prepare.setString(3, teacher.getImage());
+            prepare.setString(4, teacher.getEmail());
+            prepare.setString(5, teacher.getGender());
+            prepare.setString(6, teacher.getUsername());
+            number = prepare.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
+    }
 }

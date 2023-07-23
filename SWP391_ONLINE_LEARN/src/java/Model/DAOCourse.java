@@ -94,4 +94,12 @@ public class DAOCourse extends ConnectDatabase {
         sql = sql + "	offset (" + ConstValue.MAX_COURSE_IN_PAGE + "*" + (page - 1) + ") row fetch next " + ConstValue.MAX_COURSE_IN_PAGE + " row only";
         return this.getList(sql);
     }
+
+    public List<Course> getListCourse(int page, int TeacherID) {
+        String sql = "select * from Course\n"
+                + "where TeacherID = " + TeacherID + "\n"
+                + "order by CourseID\n"
+                + "offset " + ConstValue.MAX_COURSE_IN_PAGE + "*" + (page - 1) + " row fetch next " + ConstValue.MAX_COURSE_IN_PAGE + " row only";
+         return this.getList(sql);
+    }
 }

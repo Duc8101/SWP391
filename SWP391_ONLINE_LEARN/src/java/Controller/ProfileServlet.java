@@ -41,8 +41,8 @@ public class ProfileServlet extends HttpServlet {
             }
         }
     }
-    
-     private boolean isValidDOB(String DOB) {
+
+    private boolean isValidDOB(String DOB) {
         //use class SimpleDateFormat to initialize format date is yyyy-MM-dd
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date DateCurrent = new Date();
@@ -86,7 +86,6 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
         }
-
         if (account.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
             String address = request.getParameter("address").isEmpty() ? null : request.getParameter("address").trim();
             String DOB = request.getParameter("DOB").isEmpty() ? null : request.getParameter("DOB");
@@ -106,6 +105,21 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
             Dispatcher.forward(request, response, "/View/Profile/Student.jsp");
+        } else {
+            Teacher teacher = new Teacher(FullName, phone, image, email, gender, account.getUsername());
+            request.setAttribute("teacher", teacher);
+            if (FullName.isEmpty()) {
+                request.setAttribute("message", "You have to input your name");
+            } else if (phone != null && !phone.matches(ConstValue.FORMAT_PHONE)) {
+                request.setAttribute("message", "Phone only number and length is " + ConstValue.LENGTH_PHONE);
+            } else {
+                int number = daoTeacher.UpdateTeacher(teacher);
+                // if update successful
+                if (number > 0) {
+                    request.setAttribute("mess", "Update successful");
+                }
+            }
+            Dispatcher.forward(request, response, "/View/Profile/Teacher.jsp");
         }
     }
 
