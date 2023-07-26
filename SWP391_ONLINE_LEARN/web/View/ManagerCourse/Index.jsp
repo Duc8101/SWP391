@@ -91,11 +91,11 @@
                                         </form>
                                     </div>
                                     <div class="col-4 bg-primary border">
-                                        <a href="UpdateCourse?CourseID=<%=course.getCourseID()%>" class="  text-light">Update Course</a>             
+                                        <a href="ManagerCourse?service=EditCourse&CourseID=<%=course.getCourseID()%>" class="  text-light">Update Course</a>             
                                     </div >
 
                                     <div class="col-4 bg-primary border">
-                                        <a href="DeleteCourse?CourseID=<%=course.getCourseID()%>"  class="  text-light " 
+                                        <a href="ManagerCourse?service=DeleteCourse&CourseID=<%=course.getCourseID()%>"  class="  text-light " 
                                            onclick="return confirm('Are you sure you want to delete this course :\n<%=course.getCourseName()%>')">Delete Course</a> 
                                     </div>
                                 </div>                       

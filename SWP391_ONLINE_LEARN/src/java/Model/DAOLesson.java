@@ -23,9 +23,22 @@ public class DAOLesson extends ConnectDatabase {
         }
         return list;
     }
-    
-    public List<Lesson> getListLesson(int CourseID){
+
+    public List<Lesson> getListLesson(int CourseID) {
         String sql = "select * from Lesson where CourseID = " + CourseID;
         return this.getList(sql);
+    }
+
+    public int DeleteLesson(int LessonID) {
+        int number = 0;
+        String sql = "DELETE FROM [dbo].[Lesson]\n"
+                + "      WHERE [LessonID] = " + LessonID;
+        try {
+            Statement statement = connect.createStatement();
+            number = statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
     }
 }

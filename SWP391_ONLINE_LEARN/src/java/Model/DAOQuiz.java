@@ -49,4 +49,17 @@ public class DAOQuiz extends ConnectDatabase {
                 + "where LessonID = " + LessonID;
         return this.getList(sql);
     }
+
+    public int DeleteQuiz(String column, int ID) {
+        int number = 0;
+        String sql = "DELETE FROM [dbo].[Quiz]\n"
+                + "      WHERE [" + column + "] = " + ID;
+        try {
+            Statement statement = connect.createStatement();
+            number = statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
+    }
 }

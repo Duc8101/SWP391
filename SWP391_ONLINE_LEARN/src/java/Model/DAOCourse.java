@@ -100,6 +100,81 @@ public class DAOCourse extends ConnectDatabase {
                 + "where TeacherID = " + TeacherID + "\n"
                 + "order by CourseID\n"
                 + "offset " + ConstValue.MAX_COURSE_IN_PAGE + "*" + (page - 1) + " row fetch next " + ConstValue.MAX_COURSE_IN_PAGE + " row only";
-         return this.getList(sql);
+        return this.getList(sql);
+    }
+
+    public boolean isExist(String name, int TeacherID) {
+        String sql = "SELECT * FROM [dbo].[Course]\n"
+                + "WHERE [CourseName] = '" + name + "'" + " AND [TeacherID] = " + TeacherID;
+        return !this.getList(sql).isEmpty();
+    }
+
+    public int AddCourse(Course course) {
+        String sql = "INSERT INTO [dbo].[Course]\n"
+                + "           ([CourseName]\n"
+                + "           ,[image]\n"
+                + "           ,[price]\n"
+                + "           ,[CategoryID]\n"
+                + "           ,[TeacherID]\n"
+                + "           ,[description])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?)";
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            prepare.setString(1, course.getCourseName());
+            prepare.setString(2, course.getImage());
+            prepare.setDouble(3, course.getPrice());
+            prepare.setInt(4, course.getCategoryID());
+            prepare.setInt(5, course.getTeacherID());
+            prepare.setString(6, course.getDescription());
+            return prepare.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return 0;
+    }
+
+    public Course getCourse(int CourseID, int TeacherID) {
+        String sql = "SELECT * FROM [dbo].[Course]\n"
+                + "WHERE [CourseID] = " + CourseID + " AND [TeacherID] = " + TeacherID;
+        return this.getList(sql).isEmpty() ? null : this.getList(sql).get(0);
+    }
+
+    public int UpdateCourse(Course course) {
+        String sql = "UPDATE [dbo].[Course]\n"
+                + "   SET [CourseName] = ?\n"
+                + "      ,[image] = ?\n"
+                + "      ,[price] = ?\n"
+                + "      ,[CategoryID] = ?\n"
+                + "      ,[TeacherID] = ?\n"
+                + "      ,[description] = ?\n"
+                + " WHERE [CourseID] = ?";
+        try {
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            prepare.setString(1, course.getCourseName());
+            prepare.setString(2, course.getImage());
+            prepare.setDouble(3, course.getPrice());
+            prepare.setInt(4, course.getCategoryID());
+            prepare.setInt(5, course.getTeacherID());
+            prepare.setString(6, course.getDescription());
+            prepare.setInt(7, course.getCourseID());
+            return prepare.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return 0;
+    }
+
+    public int DeleteCourse(String column, int CourseID) {
+        int number = 0;
+        String sql = "DELETE FROM [dbo].[Course]\n"
+                + "      WHERE [" + column + "] = " + CourseID;
+        try {
+            Statement statement = connect.createStatement();
+            number = statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
     }
 }

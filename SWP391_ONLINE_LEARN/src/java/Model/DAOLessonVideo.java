@@ -35,4 +35,17 @@ public class DAOLessonVideo extends ConnectDatabase {
                 + "select LessonID from Lesson where CourseID = " + CourseID + " and LessonNo = 1)";
         return this.getList(sql).isEmpty() ? null : this.getList(sql).get(0);
     }
+    
+    public int DeleteVideo(String column, int ID) {
+        int number = 0;
+        String sql = "DELETE FROM [dbo].[LessonVideo]\n"
+                + "      WHERE [" + column + "] = " + ID;
+        try {
+            Statement statement = connect.createStatement();
+            number = statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number;
+    }
 }
